@@ -4,6 +4,9 @@
 #include <vector>
 #include <tuple>
 #include <iostream>
+#include <cassert>
+
+#include "test.h"
 
 using namespace std;
 
@@ -32,42 +35,35 @@ public:
                 isOpen.pop_back();
             }
         }
-        if (isOpen.size()!=0) {
-            return false;
-        }
-        return true;
+        return isOpen.size()==0;
     }
 };
 
-const char* bool_to_str(bool in) {
-    if (in) {
-        return "true";
-    }
-    return "false";
+Solution soln;
+
+int judge(tuple<string, bool> test_case) {
+    string paren = get<0>(test_case);
+    bool valid = get<1>(test_case);
+
+    bool res = soln.isValid(paren);
+
+    assert (valid == res);
+
+    return 1;
 }
 
 int main() {
-    Solution soln;
+    test<string, bool> validParen;
 
-    vector<tuple<string, bool>> cases;
-    cases.push_back({"()", true});
-    cases.push_back({"()[]{}", true});
-    cases.push_back({"(]", false});
-    cases.push_back({"((", false});
-    cases.push_back({"(){}}{", false});
+    validParen.add_case("()", true);
+    validParen.add_case("()[]{}", true);
+    validParen.add_case("(]", false);
+    validParen.add_case("((", false);
+    validParen.add_case("(){}}{", false);
 
-    for (int i = 0; i < cases.size(); i++) {
-        cout << "Test case " << i + 1 << ": ";
-        bool res = soln.isValid(get<0>(cases[i]));
-        bool exp = get<1>(cases[i]);
+    validParen.run_tests(judge);
 
-        if (res == exp) {
-            cout << "passed" << endl;
-        } else {
-            cout << bool_to_str(res) << " != " << bool_to_str(exp) << endl;
-            return 0;
-        }
-    }
+    cout << "All test cases pass\n" << endl;
 
     return 0;
 }

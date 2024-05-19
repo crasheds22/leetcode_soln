@@ -21,6 +21,8 @@
 #include <set>
 #include <algorithm>
 
+#include "test.h"
+
 using namespace std;
 
 class Solution {
@@ -33,37 +35,35 @@ public:
     }
 };
 
-int main() {
-    Solution soln;
+Solution soln;
 
-    vector<
-        tuple<
-            vector<int>,    // nums
-            vector<int>     // expected
-        >
-    > cases = {
-        {
-            {1, 1, 2},
-            {1, 2}
-        }, {
-            {0, 0, 1, 1, 1, 2, 2, 3, 3, 4},
-            {0, 1, 2, 3, 4}
-        }
-    };
+int judge(tuple<vector<int>, vector<int>> test_case) {
+    vector<int> nums = get<0>(test_case);
+    vector<int> expected = get<1>(test_case);
 
-    for (unsigned int i = 0; i < cases.size(); i++) {
-        cout << "Test Case " << i + 1 << endl;
+    int k = soln.removeDuplicates(nums);
 
-        vector<int> nums = get<0>(cases[i]);
-        vector<int> expected = get<1>(cases[i]);
-
-        int k = soln.removeDuplicates(nums);
-
-        assert (k == expected.size());
-        for (int i = 0; i < k; i++) {
-            assert (nums[i] == expected[i]);
-        }
+    assert (k == expected.size());
+    for (int i = 0; i < k; i++) {
+        assert (nums[i] == expected[i]);
     }
+
+    return 1;
+}
+
+int main() {
+    test<vector<int>, vector<int>> removeDuplicates;
+
+    removeDuplicates.add_case(
+        {1, 1, 2},
+        {1, 2}
+    );
+    removeDuplicates.add_case(
+        {0, 0, 1, 1, 1, 2, 2, 3, 3, 4},
+        {0, 1, 2, 3, 4}
+    );
+
+    removeDuplicates.run_tests(judge);
 
     cout << "All test cases pass\n" << endl;
 
