@@ -6,6 +6,8 @@
 #include <vector>
 #include <cassert>
 
+#include "test.h"
+
 using namespace std;
 
 class Solution {
@@ -36,28 +38,29 @@ public:
     }
 };
 
+Solution soln;
+
+int judge(tuple<string, int> test_case) {
+    string s = get<0>(test_case);
+    int n = get<1>(test_case);
+
+    int r = soln.romanToInt(s);
+
+    assert (n == r);
+
+    return 1;
+}
+
 int main() {
-    Solution soln;
+    test<string, int> romanToInt;
 
-    vector<tuple<string, int>> cases;
-    cases.push_back({ "III", 3 });
-    cases.push_back({ "LVIII", 58 });
-    cases.push_back({ "MCMXCIV", 1994 });
+    romanToInt.add_case("III", 3);
+    romanToInt.add_case("LVIII", 58);
+    romanToInt.add_case("MCMXCIV", 1994);
 
-    for (auto i = 0; i < cases.size(); i++) {
-        cout << "Test case " << i + 1;
-        auto res = soln.romanToInt(get<0>(cases[i]));
+    romanToInt.run_tests(judge);
 
-        auto exp = get<1>(cases[i]);
-        if (exp == res) {
-            cout << " passed" << endl;
-        } else {
-            cout << exp << " != " << res << endl;
-            return 0;
-        }
-    }
-
-    cout << "All test cases pass" << endl;
+    cout << "All test cases pass\n" << endl;
 
     return 1;
 }
