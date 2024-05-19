@@ -4,6 +4,9 @@
 #include <vector>
 #include <iostream>
 #include <tuple>
+#include <cassert>
+
+#include "test.h"
 
 using namespace std;
 
@@ -22,28 +25,30 @@ public:
     }
 };
 
+Solution soln;
+
+int judge(tuple<vector<string>, string> test_case) {
+    vector<string> strs = get<0>(test_case);
+    string exp = get<1>(test_case);
+
+    string res = soln.longestCommonPrefix(strs);
+
+    assert (res.compare(exp));
+
+    return 1;
+}
+
 int main() {
-    Solution soln;
+    test<vector<string>, string> longestPrefix;
 
-    vector<tuple<vector<string>, string>> cases;
-    cases.push_back({{"flower", "flow", "flight"}, "fl"});
-    cases.push_back({{"dog", "racecar", "car"}, ""});
-    cases.push_back({{"a"}, "a"});
-    cases.push_back({{"flower", "flower", "flower", "flower"}, "flower"});
+    longestPrefix.add_case({"flower", "flow", "flight"}, "fl");
+    longestPrefix.add_case({"dog", "racecar", "car"}, "");
+    longestPrefix.add_case({"a"}, "a");
+    longestPrefix.add_case({"flower", "flower", "flower", "flower"}, "flower");
 
-    for (int i = 0; i < cases.size(); i++) {
-        cout << "Test case " << i + 1 << ": ";
+    longestPrefix.run_tests(judge);
 
-        string res = soln.longestCommonPrefix(get<0>(cases[i]));
-
-        string exp = get<1>(cases[i]);
-        if (res.compare(exp)) {
-            cout << res << " != " << exp << endl;
-            return 0;
-        } else {
-            cout << "passed" << endl;
-        }
-    }
+    cout << "All test cases pass\n" << endl;
 
     return 1;
 }
