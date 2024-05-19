@@ -1,6 +1,11 @@
 //https://leetcode.com/problems/palindrome-number/description/
 
-#include "./common.h"
+#include <cassert>
+#include <vector>
+#include <tuple>
+#include <iostream>
+
+#include "test.h"
 
 using namespace std;
 
@@ -19,34 +24,30 @@ public:
     }
 };
 
-const char* bool_to_str(bool in) {
-    if (in) {
-        return "true";
-    }
-    return "false";
+Solution soln;
+
+int judge(tuple<int, bool> test_case) {
+    int num = get<0>(test_case);
+    bool expected = get<1>(test_case);
+
+    bool res = soln.isPalindrome(num);
+
+    assert (expected == res);
+
+    return 1;
 }
 
 int main() {
-    Solution soln;
+    test<int, bool> palindromeNumber;
 
-    vector<tuple<int, bool>> cases;
-    cases.push_back({121, true});
-    cases.push_back({-121, false});
-    cases.push_back({10, false});
-    cases.push_back({1234567899, false});
+    palindromeNumber.add_case(121, true);
+    palindromeNumber.add_case(-121, false);
+    palindromeNumber.add_case(10, false);
+    palindromeNumber.add_case(123456789, false);
 
-    for (auto i = 0; i < cases.size(); i++) {
-        cout << "Test case " << i + 1 << ": ";
-        bool res = soln.isPalindrome(get<0>(cases[i]));
+    palindromeNumber.run_tests(judge);
 
-        bool exp = get<1>(cases[i]);
-        if (res == exp) {
-            cout << "passed" << endl;
-        } else {
-            cout << bool_to_str(exp) << " != " << bool_to_str(res) << endl;
-            return 0;
-        }
-    }
+    cout << "All test cases pass\n" << endl;
 
     return 1;
 }
