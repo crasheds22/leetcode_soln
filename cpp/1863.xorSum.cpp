@@ -33,7 +33,7 @@ int judge(tuple<vector<int>, int> test_case) {
     int k = get<1>(test_case);
 
     int res = soln.subsetXORSum(nums);
-    cout << "sum: " << res << endl;
+    assert(k == res);
 
     return 1;
 }

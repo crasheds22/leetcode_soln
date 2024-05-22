@@ -42,26 +42,14 @@ Solution soln;
 
 int judge(tuple<vector<int>, int, vector<int>> test_case) {
     vector<int> nums = get<0>(test_case);
-    cout << "nums: ";
-    for (auto i : nums) cout << i << " ";
-    cout << endl;
 
     int val = get<1>(test_case);
-    cout << "removing: " << val << endl;
 
     vector<int> expected = get<2>(test_case);
     sort(expected.begin(), expected.end());
-    cout << "expected: ";
-    for (auto i : expected) cout << i << " ";
-    cout << endl;
 
     int k = soln.removeElement(nums, val);
     sort(nums.begin(), nums.begin() + k);
-    cout << "remaining: " << k << endl;
-    cout << "nums (modified): ";
-    for (auto i : nums) cout << i << " ";
-    cout << endl;
-
     assert (expected.size() == k);
     for (int i = 0; i < k; i++) {
         assert (nums[i] == expected[i]);
